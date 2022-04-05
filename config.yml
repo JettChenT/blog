@@ -1,0 +1,34 @@
+baseURL: "https://blog.jettchen.me"
+title: "Jett's blog"
+languageCode: "en-us"
+theme: "archie"
+copyright: "© Jett Chen"
+pygmentsstyle: "monokai"
+pygmentscodefences: true
+pygmentscodefencesguesssyntax: true
+
+params:
+  mode: "auto"
+  subtitle: "Jett's blog"
+  social:
+    - name: "GitHub"
+      icon: "github"
+      url: "https://github.com/JettChenT"
+    - name: "Twitter"
+      icon: "twitter"
+      url: "https://twitter.com/jettchen5"
+    
+menu:
+  main:
+    - name: "Home"
+      url: "/"
+      weight: 1
+    - name: "All posts"
+      url: "/posts"
+      weight: 2
+    - name: "About"
+      url: "/about"
+      weight: 3
+    - name: "Tags"
+      url: "/tags"
+      weight: 4
