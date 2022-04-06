@@ -6,6 +6,7 @@ copyright: "© Jett Chen"
 pygmentsstyle: "monokai"
 pygmentscodefences: true
 pygmentscodefencesguesssyntax: true
+googleAnalytics: G-SEJ19RP99Z
 
 params:
   mode: "auto"
