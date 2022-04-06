@@ -1,5 +1,6 @@
 ---
 title: "picoCTF 2022 Sleuthkit Apprentice Writeup"
+description: "Solution to PicoCTF 2022 problem sleuthkit apprentice"
 date: 2022-04-05T18:59:08+08:00
 tags: [picoctf, ctf-writeups, forensics]
 ---
