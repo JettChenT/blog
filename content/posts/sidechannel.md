@@ -62,7 +62,7 @@ CHOICES = "0123456789"
 prefix = ""
 
 for c in CHOICES:
-  cur = prefix+c+'0*(LEN-len(prefix)-1)
+  cur = prefix+c+'0'*(LEN-len(prefix)-1)
   foo = 0
   for _ in range(TEST_COUNT): # repeat TEST_COUNT times and get the average to improve accuracy
     start = time.time()
