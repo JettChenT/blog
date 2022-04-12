@@ -38,7 +38,7 @@ Access denied.
 ### Timing based side channel attack
 In hint 1, we can see that we're supposed to look up "timining based side channel attack"
 
-After some digging on the internet, you'll find that timing based side channel attacks refers to the behavior of certain programs where the timing of execution based on different inputs.
+After some digging on the internet, you'll find that timing based side channel attacks refers to the behavior of certain programs where the timing of execution is different based on different inputs.
 
 Suppose the pin checking function in our pin checker is implemented as the following:
 ```python
