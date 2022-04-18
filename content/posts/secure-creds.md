@@ -1,5 +1,5 @@
 ---
-title: "Secure Creds"
+title: "dctf 2022 Problem Secure Creds Writeup"
 date: 2022-04-18T08:49:05+08:00
 description: "dctf 2022 Secure Creds Writeup"
 ---
