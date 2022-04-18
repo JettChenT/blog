@@ -19,7 +19,7 @@ First, connect to the remote server:
 nc 51.124.222.205 13379
 ```
 
-After interacting with the server, you'll find that the server is a python REPL with a lot of charcters and functions such as ```"```` unavaliable. 
+After interacting with the server, you'll find that the server is a python REPL with a lot of charcters and functions such as `"` unavaliable. 
 This type of problem is called [python sandbox escape](https://book.hacktricks.xyz/misc/basic-python/bypass-python-sandboxes), or python jail.
 
 After trying all the commands from the internet, you'll find that the command `__builtins__` is not banned for this problem.
