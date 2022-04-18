@@ -2,6 +2,7 @@
 title: "picoCTF 2022 SideChannel Writeup"
 date: 2022-04-08T19:16:29+08:00
 description: "PicoCTF 2022 forensics problem SideChannel writeup"
+tags: [picoctf, ctf-writeups]
 ---
 ## The problem
 ![](https://s2.loli.net/2022/04/08/y8qCUfcs6dx4WpV.png)
