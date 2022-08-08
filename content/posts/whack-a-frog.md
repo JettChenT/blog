@@ -4,8 +4,6 @@ description: "Corctf 2022 Whack a Frog Writeup"
 date: 2022-08-08T19:38:51+08:00
 tags: [corctf, ctf-writeups]
 ---
-# Corctf 2022 whack-a-frog Writeup
-
 ## Problem
 ![](https://s2.loli.net/2022/08/08/MbjphB42ng5FqXa.png)
 
