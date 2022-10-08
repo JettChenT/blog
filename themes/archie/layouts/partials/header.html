@@ -35,7 +35,7 @@
 	{{ $fontstyle := resources.Get "css/fonts.css" | fingerprint }}
         <link href="{{ $fontstyle.Permalink }}" rel="stylesheet">
 	{{ end }}
-	<script async src="https://cdn.splitbee.io/sb.js"></script>
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
 	{{ $style := resources.Get "css/main.css" | fingerprint }}
 	<link rel="stylesheet" type="text/css" media="screen" href="{{ $style.Permalink }}" />
 
