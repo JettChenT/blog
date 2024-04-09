@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OSINT on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/osint/</link>
+    <description>Recent content in OSINT on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Sun, 11 Dec 2022 19:20:46 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/osint/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TIL: How shodan takes screenshots of computers</title>
+      <link>//localhost:1313/posts/shodan-rdp/</link>
+      <pubDate>Sun, 11 Dec 2022 19:20:46 +0800</pubDate>
+      <guid>//localhost:1313/posts/shodan-rdp/</guid>
+      <description>Recently, I have been playing around with shodan images, a service provided by shodan that aggregates screenshots of accesible videofeeds over the internet of things, including a lot of windows login screens and webcams.&#xA;The catch is, while they provide the screenshot for the users, shodan provides absolutely no hints as of how they obtained the screenshot.&#xA;Shodan claims that they grabbed those screenshots based as the RDP service is exposed to the internet, but when I tried to access the remote desktops with Microsoft Remote Desktop, it immediately prompted me for a username and password, which I do not have.</description>
+    </item>
+  </channel>
+</rss>

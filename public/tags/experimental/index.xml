@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Experimental on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/experimental/</link>
+    <description>Recent content in Experimental on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Thu, 18 Aug 2022 17:22:17 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/experimental/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Midjourney &amp; Better Call Saul</title>
+      <link>//localhost:1313/posts/midjourney-bcs/</link>
+      <pubDate>Thu, 18 Aug 2022 17:22:17 +0800</pubDate>
+      <guid>//localhost:1313/posts/midjourney-bcs/</guid>
+      <description>Recently, my favorite tv show, Better Call Saul, has ended, and it ended spectacularly&#xA;Midjourney is a public-facing text-to-image generator that I found often more fun and artistic than DALL-E.&#xA;To pay tribute to this amazing show, here are some Midjourney generations regarding BCS. It&amp;rsquo;s really amazing how the model captures the show&amp;rsquo;s visual style, and might have predicted Saul&amp;rsquo;s fate in prison!&#xA;The Generations Saul in prison, black and white &amp;ldquo;Saul Gone&amp;rdquo; poster, black and white &amp;ldquo;Saul Gone&amp;rdquo; poster black and white 2: The prison bars and the head figure in &amp;ldquo;A&amp;rdquo; largely exceeded my expectations for AI generated art.</description>
+    </item>
+  </channel>
+</rss>

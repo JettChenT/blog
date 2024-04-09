@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nahamcon-Ctf on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/nahamcon-ctf/</link>
+    <description>Recent content in Nahamcon-Ctf on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Sun, 01 May 2022 09:41:01 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/nahamcon-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NahamCon CTF 2022 Ostrich Writeup</title>
+      <link>//localhost:1313/posts/ostrich/</link>
+      <pubDate>Sun, 01 May 2022 09:41:01 +0800</pubDate>
+      <guid>//localhost:1313/posts/ostrich/</guid>
+      <description>The Problem nahamcon ctf page&#xA;Preprocessing Downloading the three files, we can see that we have a python program ostrich.py which takes each character of the flag, make some modifications to ostrich.jpg, and store it as a frame in result.apng.&#xA;First, extract the pictures of result.apng to a folder:&#xA;from apng import APNG im = APNG.open(&amp;#39;result.apng&amp;#39;) for i, (png, control) in enumerate(im.frames): png.save(f&amp;#34;./extracted/{i}.png&amp;#34;) print(f&amp;#34;total of {len(im.frames)} images&amp;#34;) Results: total of 38 images</description>
+    </item>
+  </channel>
+</rss>

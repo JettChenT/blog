@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/</link>
+    <description>Recent content in Tags on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Mon, 15 May 2023 00:47:56 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Security</title>
+      <link>//localhost:1313/tags/security/</link>
+      <pubDate>Mon, 15 May 2023 00:47:56 +0800</pubDate>
+      <guid>//localhost:1313/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TIL</title>
+      <link>//localhost:1313/tags/til/</link>
+      <pubDate>Mon, 15 May 2023 00:47:56 +0800</pubDate>
+      <guid>//localhost:1313/tags/til/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>OSINT</title>
+      <link>//localhost:1313/tags/osint/</link>
+      <pubDate>Sun, 11 Dec 2022 19:20:46 +0800</pubDate>
+      <guid>//localhost:1313/tags/osint/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AI</title>
+      <link>//localhost:1313/tags/ai/</link>
+      <pubDate>Thu, 18 Aug 2022 17:22:17 +0800</pubDate>
+      <guid>//localhost:1313/tags/ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Experimental</title>
+      <link>//localhost:1313/tags/experimental/</link>
+      <pubDate>Thu, 18 Aug 2022 17:22:17 +0800</pubDate>
+      <guid>//localhost:1313/tags/experimental/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pictures</title>
+      <link>//localhost:1313/tags/pictures/</link>
+      <pubDate>Thu, 18 Aug 2022 17:22:17 +0800</pubDate>
+      <guid>//localhost:1313/tags/pictures/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TV</title>
+      <link>//localhost:1313/tags/tv/</link>
+      <pubDate>Thu, 18 Aug 2022 17:22:17 +0800</pubDate>
+      <guid>//localhost:1313/tags/tv/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Corctf</title>
+      <link>//localhost:1313/tags/corctf/</link>
+      <pubDate>Mon, 08 Aug 2022 19:38:51 +0800</pubDate>
+      <guid>//localhost:1313/tags/corctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ctf-Writeups</title>
+      <link>//localhost:1313/tags/ctf-writeups/</link>
+      <pubDate>Mon, 08 Aug 2022 19:38:51 +0800</pubDate>
+      <guid>//localhost:1313/tags/ctf-writeups/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Forensics</title>
+      <link>//localhost:1313/tags/forensics/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/tags/forensics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Htb-Ctf</title>
+      <link>//localhost:1313/tags/htb-ctf/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/tags/htb-ctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Misc</title>
+      <link>//localhost:1313/tags/misc/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/tags/misc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nahamcon-Ctf</title>
+      <link>//localhost:1313/tags/nahamcon-ctf/</link>
+      <pubDate>Sun, 01 May 2022 09:41:01 +0800</pubDate>
+      <guid>//localhost:1313/tags/nahamcon-ctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Steganography</title>
+      <link>//localhost:1313/tags/steganography/</link>
+      <pubDate>Sun, 01 May 2022 09:41:01 +0800</pubDate>
+      <guid>//localhost:1313/tags/steganography/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dctf</title>
+      <link>//localhost:1313/tags/dctf/</link>
+      <pubDate>Mon, 18 Apr 2022 10:41:39 +0800</pubDate>
+      <guid>//localhost:1313/tags/dctf/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Picoctf</title>
+      <link>//localhost:1313/tags/picoctf/</link>
+      <pubDate>Fri, 08 Apr 2022 19:16:29 +0800</pubDate>
+      <guid>//localhost:1313/tags/picoctf/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

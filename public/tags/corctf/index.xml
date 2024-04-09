@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Corctf on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/corctf/</link>
+    <description>Recent content in Corctf on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Mon, 08 Aug 2022 19:38:51 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/corctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Corctf 2022 Whack a Frog Writeup</title>
+      <link>//localhost:1313/posts/whack-a-frog/</link>
+      <pubDate>Mon, 08 Aug 2022 19:38:51 +0800</pubDate>
+      <guid>//localhost:1313/posts/whack-a-frog/</guid>
+      <description>Problem Analysis Analyzing the pcap file, we shall see that there are a lot of /anticheat?x={x_coordinate}?y={y_coordinate} requests.&#xA;Given the amount of coordinate data, it would make sense to plot these.&#xA;Solution Required python modules:&#xA;parse: The opposite of format, used as a convinent replacement of regex. numpy: Numerica processing matplotib: Plotting Data processing from parse import * with open(&amp;#39;whacking-the-froggers.pcap&amp;#39;, &amp;#39;rb&amp;#39;) as f: lines = f.readlines() valids = [] for l in lines: if b&amp;#39;anticheat&amp;#39; in l: valids.</description>
+    </item>
+  </channel>
+</rss>

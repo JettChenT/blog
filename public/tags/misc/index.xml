@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Misc on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/misc/</link>
+    <description>Recent content in Misc on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Fri, 20 May 2022 18:48:39 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/misc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB CTF 2022 Compressor writeup</title>
+      <link>//localhost:1313/posts/compressor/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/compressor/</guid>
+      <description>Problem description The problem starts a docker instance, which could be connected via netcat. This shows the following interface:&#xA;[*] Directory to work in: QV35hifhJuQ2tO7nNnKNDf30JmUxfAej Component List: +===============+ | | | 1. Head 🤖 | | 2. Torso 🦴 | | 3. Hands 💪 | | 4. Legs 🦵 | | | +===============+ [*] Choose component: Choosing any of the components shows the following interface:&#xA;Actions: 1. Create artifact 2. List directory (pwd; ls -la) 3.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Jett&#39;s blog</title>
+    <link>//localhost:1313/posts/</link>
+    <description>Recent content in Posts on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Tue, 09 Apr 2024 17:34:41 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PicoCTF 2024 - Elements Writeup</title>
+      <link>//localhost:1313/posts/elements/</link>
+      <pubDate>Tue, 09 Apr 2024 17:34:41 +0800</pubDate>
+      <guid>//localhost:1313/posts/elements/</guid>
+      <description>We got global rank 10 in PicoCTF 2024!&#xA;Elements This problem is essentially an XSS + CSP bypass. The XSS part was easy: we need to construct a dependency tree to build the XSS element. For this, I used topological sorting.&#xA;import graphlib recipies = [[&amp;#34;Ash&amp;#34;,&amp;#34;Fire&amp;#34;,&amp;#34;Charcoal&amp;#34;],[&amp;#34;Steam Engine&amp;#34;,&amp;#34;Water&amp;#34;,&amp;#34;Vapor&amp;#34;],[&amp;#34;Brick Oven&amp;#34;,&amp;#34;Heat Engine&amp;#34;,&amp;#34;Oven&amp;#34;], ...] orig = [&amp;#39;Fire&amp;#39;, &amp;#39;Water&amp;#39;, &amp;#39;Earth&amp;#39;, &amp;#39;Air&amp;#39;] dependencies = {} for r in recipies: dependencies[r[2]] = [r[0], r[1]] dep_set = set() dep_graph = {} def trace_dependency(dep, level = 0): if dep in dep_set: return if dep in dependencies: dep_graph[dep] = set(dependencies[dep]) for d in dependencies[dep]: if d in orig: continue trace_dependency(d, level+1) trace_dependency(&amp;#34;XSS&amp;#34;) ts = graphlib.</description>
+    </item>
+    <item>
+      <title>Why archive.org can&#39;t prove the authenticity of their snapshots</title>
+      <link>//localhost:1313/posts/insecure-snapshots/</link>
+      <pubDate>Mon, 15 May 2023 00:47:56 +0800</pubDate>
+      <guid>//localhost:1313/posts/insecure-snapshots/</guid>
+      <description>Recently, a federal judge ruled against the Internet Archive in their mission to preserve ebooks. While this doesn&amp;rsquo;t have anything to do with the WayBack Machine, it led me to wonder: why do we need a centralized platform to take and share website snapshots in the first place? Why not let users take them themselves and share them around the internet?&#xA;The answer to this question seems obvious at first glance.</description>
+    </item>
+    <item>
+      <title>TIL: How shodan takes screenshots of computers</title>
+      <link>//localhost:1313/posts/shodan-rdp/</link>
+      <pubDate>Sun, 11 Dec 2022 19:20:46 +0800</pubDate>
+      <guid>//localhost:1313/posts/shodan-rdp/</guid>
+      <description>Recently, I have been playing around with shodan images, a service provided by shodan that aggregates screenshots of accesible videofeeds over the internet of things, including a lot of windows login screens and webcams.&#xA;The catch is, while they provide the screenshot for the users, shodan provides absolutely no hints as of how they obtained the screenshot.&#xA;Shodan claims that they grabbed those screenshots based as the RDP service is exposed to the internet, but when I tried to access the remote desktops with Microsoft Remote Desktop, it immediately prompted me for a username and password, which I do not have.</description>
+    </item>
+    <item>
+      <title>TIL: Burpsuite</title>
+      <link>//localhost:1313/posts/til-burp/</link>
+      <pubDate>Thu, 08 Dec 2022 23:13:00 +0800</pubDate>
+      <guid>//localhost:1313/posts/til-burp/</guid>
+      <description>About: TIL TIL stands for &amp;ldquo;Today I Learned,&amp;rdquo; and I plan to write a TIL post whenever I discover something interesting. It could be related to anything: from technology to life.&#xA;This is inspired by 100daystooffload and various TIL posts I found over the internet. This can motivate me to keep finding interesting things to learn and experience, improve my writing a little bit, and, most importantly, be an intriguing read.</description>
+    </item>
+    <item>
+      <title>Midjourney &amp; Better Call Saul</title>
+      <link>//localhost:1313/posts/midjourney-bcs/</link>
+      <pubDate>Thu, 18 Aug 2022 17:22:17 +0800</pubDate>
+      <guid>//localhost:1313/posts/midjourney-bcs/</guid>
+      <description>Recently, my favorite tv show, Better Call Saul, has ended, and it ended spectacularly&#xA;Midjourney is a public-facing text-to-image generator that I found often more fun and artistic than DALL-E.&#xA;To pay tribute to this amazing show, here are some Midjourney generations regarding BCS. It&amp;rsquo;s really amazing how the model captures the show&amp;rsquo;s visual style, and might have predicted Saul&amp;rsquo;s fate in prison!&#xA;The Generations Saul in prison, black and white &amp;ldquo;Saul Gone&amp;rdquo; poster, black and white &amp;ldquo;Saul Gone&amp;rdquo; poster black and white 2: The prison bars and the head figure in &amp;ldquo;A&amp;rdquo; largely exceeded my expectations for AI generated art.</description>
+    </item>
+    <item>
+      <title>Corctf 2022 Whack a Frog Writeup</title>
+      <link>//localhost:1313/posts/whack-a-frog/</link>
+      <pubDate>Mon, 08 Aug 2022 19:38:51 +0800</pubDate>
+      <guid>//localhost:1313/posts/whack-a-frog/</guid>
+      <description>Problem Analysis Analyzing the pcap file, we shall see that there are a lot of /anticheat?x={x_coordinate}?y={y_coordinate} requests.&#xA;Given the amount of coordinate data, it would make sense to plot these.&#xA;Solution Required python modules:&#xA;parse: The opposite of format, used as a convinent replacement of regex. numpy: Numerica processing matplotib: Plotting Data processing from parse import * with open(&amp;#39;whacking-the-froggers.pcap&amp;#39;, &amp;#39;rb&amp;#39;) as f: lines = f.readlines() valids = [] for l in lines: if b&amp;#39;anticheat&amp;#39; in l: valids.</description>
+    </item>
+    <item>
+      <title>HTB CTF 2022 Compressor writeup</title>
+      <link>//localhost:1313/posts/compressor/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/compressor/</guid>
+      <description>Problem description The problem starts a docker instance, which could be connected via netcat. This shows the following interface:&#xA;[*] Directory to work in: QV35hifhJuQ2tO7nNnKNDf30JmUxfAej Component List: +===============+ | | | 1. Head 🤖 | | 2. Torso 🦴 | | 3. Hands 💪 | | 4. Legs 🦵 | | | +===============+ [*] Choose component: Choosing any of the components shows the following interface:&#xA;Actions: 1. Create artifact 2. List directory (pwd; ls -la) 3.</description>
+    </item>
+    <item>
+      <title>HTB CTF Golden Persistence Writeup</title>
+      <link>//localhost:1313/posts/golden-persistence/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/golden-persistence/</guid>
+      <description>Problem description The challenge has a downloadable part. After extracting the zip file, we have a NTUSER.DAT&#xA;Prerequisites NTUSER.DAT is a windows generated file which contains the information of the user account settings and customizations.&#xA;After some research on the internet, I fond that Regripper and RegistryExplorer are the two useful tools of conducting forensics on NTUSER.DAT files.&#xA;Download both of the tools from the links above onto a windows machine/vm.</description>
+    </item>
+    <item>
+      <title>NahamCon CTF 2022 Ostrich Writeup</title>
+      <link>//localhost:1313/posts/ostrich/</link>
+      <pubDate>Sun, 01 May 2022 09:41:01 +0800</pubDate>
+      <guid>//localhost:1313/posts/ostrich/</guid>
+      <description>The Problem nahamcon ctf page&#xA;Preprocessing Downloading the three files, we can see that we have a python program ostrich.py which takes each character of the flag, make some modifications to ostrich.jpg, and store it as a frame in result.apng.&#xA;First, extract the pictures of result.apng to a folder:&#xA;from apng import APNG im = APNG.open(&amp;#39;result.apng&amp;#39;) for i, (png, control) in enumerate(im.frames): png.save(f&amp;#34;./extracted/{i}.png&amp;#34;) print(f&amp;#34;total of {len(im.frames)} images&amp;#34;) Results: total of 38 images</description>
+    </item>
+    <item>
+      <title>dctf 2022 Safe Space writeup</title>
+      <link>//localhost:1313/posts/safe-space/</link>
+      <pubDate>Mon, 18 Apr 2022 10:41:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/safe-space/</guid>
+      <description>The problem link to the problem(requires login)&#xA;Solution First, connect to the remote server:&#xA;nc 51.124.222.205 13379 After interacting with the server, you&amp;rsquo;ll find that the server is a python REPL with a lot of charcters and functions such as &amp;quot; unavaliable. This type of problem is called python sandbox escape, or python jail.&#xA;After trying all the commands from the internet, you&amp;rsquo;ll find that the command __builtins__ is not banned for this problem.</description>
+    </item>
+    <item>
+      <title>dctf 2022 Problem Secure Creds Writeup</title>
+      <link>//localhost:1313/posts/secure-creds/</link>
+      <pubDate>Mon, 18 Apr 2022 08:49:05 +0800</pubDate>
+      <guid>//localhost:1313/posts/secure-creds/</guid>
+      <description>The problem link to the problem(requires login)&#xA;Solution First, download the zip file, and unzip it.&#xA;You should see the file lsass.DMP&#xA;To check the filedump type, use the file command:&#xA;file lsass.DMP output: lsass.DMP: Mini DuMP crash report, 16 streams, Sat Apr 9 02:47:27 2022, 0x421826 type&#xA;After a google search, the term lsass stands for &amp;ldquo;Local Security Authority Server Service,&amp;rdquo; and after searching the keywords &amp;ldquo;lsass minidump&amp;rdquo; together, you would encounter a tool called Mimikatz</description>
+    </item>
+    <item>
+      <title>picoCTF 2022 SideChannel Writeup</title>
+      <link>//localhost:1313/posts/sidechannel/</link>
+      <pubDate>Fri, 08 Apr 2022 19:16:29 +0800</pubDate>
+      <guid>//localhost:1313/posts/sidechannel/</guid>
+      <description>The problem link to the problem&#xA;Hints Read about &amp;ldquo;timing-based side-channel attacks.&amp;rdquo; Attempting to reverse-enginner or exploit the binary won&amp;rsquo;t work Run the attacks against the pin_checker binary Solution Running the binary A problem that would likely occur when solving this problem is running the binary.&#xA;The binary provided by picoCTF is not compatible with my local machine(Macbook). However, the binary could be easily executed within picoCTF&amp;rsquo;s webshell.&#xA;First, download the binary:</description>
+    </item>
+    <item>
+      <title>picoCTF 2022 Sleuthkit Apprentice Writeup</title>
+      <link>//localhost:1313/posts/sleuthkit-apprentice/</link>
+      <pubDate>Tue, 05 Apr 2022 18:59:08 +0800</pubDate>
+      <guid>//localhost:1313/posts/sleuthkit-apprentice/</guid>
+      <description>The Problem is the following:&#xA;Download &amp;amp; extract the image Run the following command:&#xA;wget https://artifacts.picoctf.net/c/336/disk.flag.img.gz gunzip disk.flag.img.gz a file named disk.flag.img should show up at your working directory.&#xA;Finding the flag with autopsy In the following steps, I will demonstrate how to extract the key with autopsy, the graphical user interface for sleuthkit. This tool is built into kali linux.&#xA;First, run autopsy and open localhost:9999/autopsy&#xA;Use the graphical user interface to open a new case, and click through the default options until &amp;ldquo;Add A New Image&amp;rdquo;:</description>
+    </item>
+  </channel>
+</rss>

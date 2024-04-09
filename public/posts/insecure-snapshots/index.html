@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Why archive.org can&#39;t prove the authenticity of their snapshots - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="... and why you should probably use them anyways" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Why archive.org can&#39;t prove the authenticity of their snapshots" />
+<meta property="og:description" content="... and why you should probably use them anyways" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/insecure-snapshots/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-05-15T00:47:56+08:00" />
+<meta property="article:modified_time" content="2023-05-15T00:47:56+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Why archive.org can&#39;t prove the authenticity of their snapshots"/>
+<meta name="twitter:description" content="... and why you should probably use them anyways"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Why archive.org can&#39;t prove the authenticity of their snapshots</h1>
+			<div class="meta">Posted on May 15, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<p>Recently, a federal judge ruled against the Internet Archive in their mission to preserve ebooks. While this doesn&rsquo;t have anything to do with the WayBack Machine, it led me to wonder: why do we need a centralized platform to take and share website snapshots in the first place? Why not let users take them themselves and share them around the internet?</p>
+<p>The answer to this question seems obvious at first glance. Any user can simply open up a text editor, modify the HTML, and share it with others. This would make it impossible to tell if the shared snapshot had been tampered with. But can&rsquo;t we leverage the little lock on top of our URL bars ‒ the one that assures us that the data we&rsquo;re receiving is from a trusted server ‒ to ensure the authenticity of website snapshots as well?</p>
+<p>Well&hellip; it’s not that simple. While HTTPS(the protocol behind that little lock) this provides asymmetric encryption during the server&rsquo;s key exchange phase to ensure that the data sent is not fabricated by a client, the actual data transmission between client and server happens via symmetric encryption. This means that clients can &ldquo;pretend&rdquo; to a third party that a server sent something to them, and there&rsquo;s no way to disprove this claim. Similarly, there&rsquo;s no way to prove that data a client received was sent by the server. Therefore, HTTPS does not provide non-repudiation ‒ a feature needed to ensure that data cannot be denied during or after a transaction.</p>
+<p>Thus, while HTTPS establishes trust between client and server, it doesn&rsquo;t establish trust for third party notaries. While cryptographic timestamping can prevent repudiation to a certain degree, tampering is still possible during snapshotting. This means that we can only trust website snapshots as much as the ones who took the snapshot, which is why we still rely trusted third parties like <a href="http://archive.org">archive.org</a> and <a href="http://archive.is">archive.is</a> to maintain some sense of truth in a digital world that inherently allows for fabrication.</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/til">TIL</a></li>
+					
+					<li><a href="/tags/security">Security</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

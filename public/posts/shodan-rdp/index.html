@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>TIL: How shodan takes screenshots of computers - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Accessing login screens of RDP servers without Network Level Authentication" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="TIL: How shodan takes screenshots of computers" />
+<meta property="og:description" content="Accessing login screens of RDP servers without Network Level Authentication" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/shodan-rdp/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-12-11T19:20:46+08:00" />
+<meta property="article:modified_time" content="2022-12-11T19:20:46+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="TIL: How shodan takes screenshots of computers"/>
+<meta name="twitter:description" content="Accessing login screens of RDP servers without Network Level Authentication"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">TIL: How shodan takes screenshots of computers</h1>
+			<div class="meta">Posted on Dec 11, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<p>Recently, I have been playing around with <a href="https://images.shodan.io/">shodan images</a>, a service provided by shodan that aggregates screenshots of accesible videofeeds over the internet of things, including a lot of windows login screens and webcams.</p>
+<p><img src="https://s2.loli.net/2022/12/11/YCHW8bwLdlkhxBU.png" alt="CleanShot 2022-12-11 at 20.12.47.png"></p>
+<p>The catch is, while they provide the screenshot for the users, shodan provides absolutely no hints as of how they obtained the screenshot.</p>
+<p>Shodan <a href="https://security.stackexchange.com/questions/244308/how-does-shodan-take-screenshots-from-webcams-which-have-authentication">claims</a> that they grabbed those screenshots based as the RDP service is exposed to the internet, but when I tried to access the remote desktops with Microsoft Remote Desktop, it immediately prompted me for a username and password, which I do not have.</p>
+<p>After some digging on the internet, I came across this post on <a href="https://www.reddit.com/r/hacking/comments/w1dli6/how_does_shodan_grab_rdp_screenshots_of_windows">reddit</a>,
+which says that the servers that have a login screen scraped by shodan doesn&rsquo;t have <a href="https://en.wikipedia.org/wiki/Network_Level_Authentication">Network Level Authentication</a> enabled.
+While Microsoft RDP client enforces Network Level Authentication by default on the client side, it could be bypassed if the server doesn&rsquo;t enforce it with a custom client.</p>
+<p>While <a href="http://www.rdesktop.org/">rdesktop</a> was suggested, it seems to be unmaintained and brew wouldn&rsquo;t let me install it.
+Instead, I came across <a href="https://www.freerdp.com/">freerdp</a>, an actively maintained, fully featured, though less user friendly(CLI based) RDP client.</p>
+<p>To access a RDP server without NLA, create a regular rdp file from the target machine&rsquo;s ip address, and add the following line to the file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>enablecredsspsupport:i:0
+</span></span></code></pre></div><p>Or, you can paste the snippet below, and switch <code>&lt;YOUR_IP_ADDRESS&gt;</code> for the target machine&rsquo;s ip address</p>
+<script src="https://gist.github.com/JettChenT/aac48ce540f001ad0754d42b640e8832.js"></script>
+
+<p>After <a href="https://github.com/FreeRDP/FreeRDP/wiki/PreBuilds">installing freerdp</a> (and <a href="https://www.xquartz.org">xquartz</a> if you&rsquo;re on mac),
+simply run the follwing command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>xfreerdp ./sample.rdp 
+</span></span></code></pre></div><p>And voila, you should be able to access the login screen of the target machine just like shodan.</p>
+<p>Yes, you still need the password in order to access the machine, but the ability to access the machine reveals all the user accounts
+so that hackers would only have to enumerate the passwords for that specific account, potentially revealing your identity information,
+and opens up more possibilities for <a href="https://en.wikipedia.org/wiki/BlueKeep">further attacks</a>.</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/til">TIL</a></li>
+					
+					<li><a href="/tags/osint">OSINT</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

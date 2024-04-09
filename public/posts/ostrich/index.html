@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>NahamCon CTF 2022 Ostrich Writeup - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Solution to Nahamcon CTF 2022 problem Ostrich" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="NahamCon CTF 2022 Ostrich Writeup" />
+<meta property="og:description" content="Solution to Nahamcon CTF 2022 problem Ostrich" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/ostrich/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-01T09:41:01+08:00" />
+<meta property="article:modified_time" content="2022-05-01T09:41:01+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="NahamCon CTF 2022 Ostrich Writeup"/>
+<meta name="twitter:description" content="Solution to Nahamcon CTF 2022 problem Ostrich"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">NahamCon CTF 2022 Ostrich Writeup</h1>
+			<div class="meta">Posted on May 1, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="the-problem">The Problem</h2>
+<p><img src="https://s2.loli.net/2022/05/01/FrRS3XxNvnoicWt.png" alt="">
+<a href="https://ctf.nahamcon.com/challenges">nahamcon ctf page</a></p>
+<h2 id="preprocessing">Preprocessing</h2>
+<p>Downloading the three files, we can see that we have a python program <code>ostrich.py</code> which takes each character of the flag, make some modifications to <code>ostrich.jpg</code>,
+and store it as a frame in <code>result.apng</code>.</p>
+<p>First, extract the pictures of <code>result.apng</code> to a folder:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> apng <span style="color:#f92672">import</span> APNG
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>im <span style="color:#f92672">=</span> APNG<span style="color:#f92672">.</span>open(<span style="color:#e6db74">&#39;result.apng&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i, (png, control) <span style="color:#f92672">in</span> enumerate(im<span style="color:#f92672">.</span>frames):
+</span></span><span style="display:flex;"><span>	png<span style="color:#f92672">.</span>save(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;./extracted/</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">.png&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;total of </span><span style="color:#e6db74">{</span>len(im<span style="color:#f92672">.</span>frames)<span style="color:#e6db74">}</span><span style="color:#e6db74"> images&#34;</span>)
+</span></span></code></pre></div><p>Results:
+<code>total of 38 images</code></p>
+<h2 id="observation">Observation</h2>
+<p>TLDR: <a href="#solution">solution</a></p>
+<p>Looking at <code>ostrich.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> imageio
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> Image, GifImagePlugin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> long_to_bytes <span style="color:#66d9ef">as</span> l2b, bytes_to_long <span style="color:#66d9ef">as</span> b2l
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> apng <span style="color:#f92672">import</span> APNG
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>filenames <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;REDACTED&#34;</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>orig_filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ostrich.jpg&#34;</span>
+</span></span><span style="display:flex;"><span>orig_image <span style="color:#f92672">=</span> Image<span style="color:#f92672">.</span>open(orig_filename)
+</span></span><span style="display:flex;"><span>pixels <span style="color:#f92672">=</span> orig_image<span style="color:#f92672">.</span>load()
+</span></span><span style="display:flex;"><span>width, height <span style="color:#f92672">=</span> orig_image<span style="color:#f92672">.</span>size
+</span></span><span style="display:flex;"><span>images <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(flag)):
+</span></span><span style="display:flex;"><span>    new_filename <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;./images/ostrich</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">.png&#39;</span>
+</span></span><span style="display:flex;"><span>    new_image <span style="color:#f92672">=</span> Image<span style="color:#f92672">.</span>new(orig_image<span style="color:#f92672">.</span>mode, orig_image<span style="color:#f92672">.</span>size)
+</span></span><span style="display:flex;"><span>    new_pixels <span style="color:#f92672">=</span> new_image<span style="color:#f92672">.</span>load()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(width):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> y <span style="color:#f92672">in</span> range(height):
+</span></span><span style="display:flex;"><span>            new_pixels[x,y] <span style="color:#f92672">=</span> orig_image<span style="color:#f92672">.</span>getpixel((x, y))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,width)
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,height)
+</span></span><span style="display:flex;"><span>    pixel <span style="color:#f92672">=</span> list(orig_image<span style="color:#f92672">.</span>getpixel((x, y)))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(pixel[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>        x <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,width)
+</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,height)
+</span></span><span style="display:flex;"><span>        pixel <span style="color:#f92672">=</span> list(orig_image<span style="color:#f92672">.</span>getpixel((random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,width), random<span style="color:#f92672">.</span>randrange(<span style="color:#ae81ff">0</span>,height))))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    new_val <span style="color:#f92672">=</span> l2b(pixel[<span style="color:#ae81ff">2</span>]<span style="color:#f92672">*</span>ord(flag[i]))
+</span></span><span style="display:flex;"><span>    pixel[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> new_val[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(new_val) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        pixel[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> new_val[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>    pixel[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    new_pixels[x, y] <span style="color:#f92672">=</span> (pixel[<span style="color:#ae81ff">0</span>], pixel[<span style="color:#ae81ff">1</span>], pixel[<span style="color:#ae81ff">2</span>])
+</span></span><span style="display:flex;"><span>    new_image<span style="color:#f92672">.</span>save(new_filename)
+</span></span><span style="display:flex;"><span>    filenames<span style="color:#f92672">.</span>append(new_filename)
+</span></span><span style="display:flex;"><span>    images<span style="color:#f92672">.</span>append(new_image)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>APNG<span style="color:#f92672">.</span>from_files(filenames, delay<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>save(<span style="color:#e6db74">&#34;result.apng&#34;</span>)
+</span></span></code></pre></div><p>We can see that the pixel picking algorithm is a little weird. If the initially choosen pixel has a non-zero <code>b</code> value, the information would be stored in the same location as the pixel. Otherwise, the program will pick another pixel with a non-zero <code>b</code> value, however, the information would be stored in a totally different location.</p>
+<p>In the latter case, it would be nearly impossible to recover the original flag, as we don&rsquo;t have the position of the original pixel, thus not knowing the original <code>pixel[2]</code> value. (If anyone knows how to solve the latter situation plz leave a comment)</p>
+<p>However, I found that only 3605 out of the 584000 pixels has a zero <code>b</code> value, which means that there&rsquo;s only a 0.62% chance that we would encounter the second situation for each frame. Considering that there are 38 images to extract, there&rsquo;s a 21% chance that the second case happens at least once, so let&rsquo;s take the risk and assume that the second case doesn&rsquo;t execute at all.</p>
+<p>Thus, we can take the images of each frame, find the pixel that was modified, and decode it with the information of the original pixel</p>
+<h2 id="solution">Solution</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> Image
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.number <span style="color:#f92672">import</span> bytes_to_long <span style="color:#66d9ef">as</span> b2l
+</span></span><span style="display:flex;"><span>TOTAL_N <span style="color:#f92672">=</span> <span style="color:#ae81ff">38</span>
+</span></span><span style="display:flex;"><span>base_im <span style="color:#f92672">=</span> Image<span style="color:#f92672">.</span>open(<span style="color:#e6db74">&#39;./ostrich.jpg&#39;</span>)
+</span></span><span style="display:flex;"><span>wid, hei <span style="color:#f92672">=</span> base_im<span style="color:#f92672">.</span>size
+</span></span><span style="display:flex;"><span>images <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(TOTAL_N):
+</span></span><span style="display:flex;"><span>	images<span style="color:#f92672">.</span>append(Image<span style="color:#f92672">.</span>open(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;./extracted/</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">.png&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>res <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> im <span style="color:#f92672">in</span> images:
+</span></span><span style="display:flex;"><span>	foo <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(wid):
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> y <span style="color:#f92672">in</span> range(hei):
+</span></span><span style="display:flex;"><span>			orig_pixel <span style="color:#f92672">=</span> list(base_im<span style="color:#f92672">.</span>getpixel((x,y)))
+</span></span><span style="display:flex;"><span>			new_pixel <span style="color:#f92672">=</span> list(im<span style="color:#f92672">.</span>getpixel((x,y)))
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> new_pixel[<span style="color:#ae81ff">2</span>]<span style="color:#f92672">!=</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> orig_pixel[<span style="color:#ae81ff">2</span>]<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>: <span style="color:#75715e">#if the pixel is not modified</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e"># create list of bytes</span>
+</span></span><span style="display:flex;"><span>			blist <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>			blist<span style="color:#f92672">.</span>append(new_pixel[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span>(new_pixel[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">!=</span>orig_pixel[<span style="color:#ae81ff">1</span>]):
+</span></span><span style="display:flex;"><span>				blist<span style="color:#f92672">.</span>append(new_pixel[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e"># decode list of bytes (see original program&#39;s encoding process)</span>
+</span></span><span style="display:flex;"><span>			cur <span style="color:#f92672">=</span> int(b2l(bytes(blist))<span style="color:#f92672">/</span>orig_pixel[<span style="color:#ae81ff">2</span>])
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e"># print(chr(cur))</span>
+</span></span><span style="display:flex;"><span>			res <span style="color:#f92672">+=</span> chr(cur)
+</span></span><span style="display:flex;"><span>			foo <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> foo:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(res)
+</span></span></code></pre></div><p>After running(should take several seconds), the result is:
+<code>flag{d3a5b80f96a3ce0dd0aedbefbc6b1fa1}</code></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/ctf-writeups">ctf-writeups</a></li>
+					
+					<li><a href="/tags/nahamcon-ctf">nahamcon-ctf</a></li>
+					
+					<li><a href="/tags/steganography">steganography</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

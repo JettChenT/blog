@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ctf-Writeups on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/ctf-writeups/</link>
+    <description>Recent content in Ctf-Writeups on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Mon, 08 Aug 2022 19:38:51 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/ctf-writeups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Corctf 2022 Whack a Frog Writeup</title>
+      <link>//localhost:1313/posts/whack-a-frog/</link>
+      <pubDate>Mon, 08 Aug 2022 19:38:51 +0800</pubDate>
+      <guid>//localhost:1313/posts/whack-a-frog/</guid>
+      <description>Problem Analysis Analyzing the pcap file, we shall see that there are a lot of /anticheat?x={x_coordinate}?y={y_coordinate} requests.&#xA;Given the amount of coordinate data, it would make sense to plot these.&#xA;Solution Required python modules:&#xA;parse: The opposite of format, used as a convinent replacement of regex. numpy: Numerica processing matplotib: Plotting Data processing from parse import * with open(&amp;#39;whacking-the-froggers.pcap&amp;#39;, &amp;#39;rb&amp;#39;) as f: lines = f.readlines() valids = [] for l in lines: if b&amp;#39;anticheat&amp;#39; in l: valids.</description>
+    </item>
+    <item>
+      <title>HTB CTF 2022 Compressor writeup</title>
+      <link>//localhost:1313/posts/compressor/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/compressor/</guid>
+      <description>Problem description The problem starts a docker instance, which could be connected via netcat. This shows the following interface:&#xA;[*] Directory to work in: QV35hifhJuQ2tO7nNnKNDf30JmUxfAej Component List: +===============+ | | | 1. Head 🤖 | | 2. Torso 🦴 | | 3. Hands 💪 | | 4. Legs 🦵 | | | +===============+ [*] Choose component: Choosing any of the components shows the following interface:&#xA;Actions: 1. Create artifact 2. List directory (pwd; ls -la) 3.</description>
+    </item>
+    <item>
+      <title>HTB CTF Golden Persistence Writeup</title>
+      <link>//localhost:1313/posts/golden-persistence/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/golden-persistence/</guid>
+      <description>Problem description The challenge has a downloadable part. After extracting the zip file, we have a NTUSER.DAT&#xA;Prerequisites NTUSER.DAT is a windows generated file which contains the information of the user account settings and customizations.&#xA;After some research on the internet, I fond that Regripper and RegistryExplorer are the two useful tools of conducting forensics on NTUSER.DAT files.&#xA;Download both of the tools from the links above onto a windows machine/vm.</description>
+    </item>
+    <item>
+      <title>NahamCon CTF 2022 Ostrich Writeup</title>
+      <link>//localhost:1313/posts/ostrich/</link>
+      <pubDate>Sun, 01 May 2022 09:41:01 +0800</pubDate>
+      <guid>//localhost:1313/posts/ostrich/</guid>
+      <description>The Problem nahamcon ctf page&#xA;Preprocessing Downloading the three files, we can see that we have a python program ostrich.py which takes each character of the flag, make some modifications to ostrich.jpg, and store it as a frame in result.apng.&#xA;First, extract the pictures of result.apng to a folder:&#xA;from apng import APNG im = APNG.open(&amp;#39;result.apng&amp;#39;) for i, (png, control) in enumerate(im.frames): png.save(f&amp;#34;./extracted/{i}.png&amp;#34;) print(f&amp;#34;total of {len(im.frames)} images&amp;#34;) Results: total of 38 images</description>
+    </item>
+    <item>
+      <title>dctf 2022 Safe Space writeup</title>
+      <link>//localhost:1313/posts/safe-space/</link>
+      <pubDate>Mon, 18 Apr 2022 10:41:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/safe-space/</guid>
+      <description>The problem link to the problem(requires login)&#xA;Solution First, connect to the remote server:&#xA;nc 51.124.222.205 13379 After interacting with the server, you&amp;rsquo;ll find that the server is a python REPL with a lot of charcters and functions such as &amp;quot; unavaliable. This type of problem is called python sandbox escape, or python jail.&#xA;After trying all the commands from the internet, you&amp;rsquo;ll find that the command __builtins__ is not banned for this problem.</description>
+    </item>
+    <item>
+      <title>dctf 2022 Problem Secure Creds Writeup</title>
+      <link>//localhost:1313/posts/secure-creds/</link>
+      <pubDate>Mon, 18 Apr 2022 08:49:05 +0800</pubDate>
+      <guid>//localhost:1313/posts/secure-creds/</guid>
+      <description>The problem link to the problem(requires login)&#xA;Solution First, download the zip file, and unzip it.&#xA;You should see the file lsass.DMP&#xA;To check the filedump type, use the file command:&#xA;file lsass.DMP output: lsass.DMP: Mini DuMP crash report, 16 streams, Sat Apr 9 02:47:27 2022, 0x421826 type&#xA;After a google search, the term lsass stands for &amp;ldquo;Local Security Authority Server Service,&amp;rdquo; and after searching the keywords &amp;ldquo;lsass minidump&amp;rdquo; together, you would encounter a tool called Mimikatz</description>
+    </item>
+    <item>
+      <title>picoCTF 2022 SideChannel Writeup</title>
+      <link>//localhost:1313/posts/sidechannel/</link>
+      <pubDate>Fri, 08 Apr 2022 19:16:29 +0800</pubDate>
+      <guid>//localhost:1313/posts/sidechannel/</guid>
+      <description>The problem link to the problem&#xA;Hints Read about &amp;ldquo;timing-based side-channel attacks.&amp;rdquo; Attempting to reverse-enginner or exploit the binary won&amp;rsquo;t work Run the attacks against the pin_checker binary Solution Running the binary A problem that would likely occur when solving this problem is running the binary.&#xA;The binary provided by picoCTF is not compatible with my local machine(Macbook). However, the binary could be easily executed within picoCTF&amp;rsquo;s webshell.&#xA;First, download the binary:</description>
+    </item>
+    <item>
+      <title>picoCTF 2022 Sleuthkit Apprentice Writeup</title>
+      <link>//localhost:1313/posts/sleuthkit-apprentice/</link>
+      <pubDate>Tue, 05 Apr 2022 18:59:08 +0800</pubDate>
+      <guid>//localhost:1313/posts/sleuthkit-apprentice/</guid>
+      <description>The Problem is the following:&#xA;Download &amp;amp; extract the image Run the following command:&#xA;wget https://artifacts.picoctf.net/c/336/disk.flag.img.gz gunzip disk.flag.img.gz a file named disk.flag.img should show up at your working directory.&#xA;Finding the flag with autopsy In the following steps, I will demonstrate how to extract the key with autopsy, the graphical user interface for sleuthkit. This tool is built into kali linux.&#xA;First, run autopsy and open localhost:9999/autopsy&#xA;Use the graphical user interface to open a new case, and click through the default options until &amp;ldquo;Add A New Image&amp;rdquo;:</description>
+    </item>
+  </channel>
+</rss>

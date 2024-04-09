@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Picoctf on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/picoctf/</link>
+    <description>Recent content in Picoctf on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Fri, 08 Apr 2022 19:16:29 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/picoctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>picoCTF 2022 SideChannel Writeup</title>
+      <link>//localhost:1313/posts/sidechannel/</link>
+      <pubDate>Fri, 08 Apr 2022 19:16:29 +0800</pubDate>
+      <guid>//localhost:1313/posts/sidechannel/</guid>
+      <description>The problem link to the problem&#xA;Hints Read about &amp;ldquo;timing-based side-channel attacks.&amp;rdquo; Attempting to reverse-enginner or exploit the binary won&amp;rsquo;t work Run the attacks against the pin_checker binary Solution Running the binary A problem that would likely occur when solving this problem is running the binary.&#xA;The binary provided by picoCTF is not compatible with my local machine(Macbook). However, the binary could be easily executed within picoCTF&amp;rsquo;s webshell.&#xA;First, download the binary:</description>
+    </item>
+    <item>
+      <title>picoCTF 2022 Sleuthkit Apprentice Writeup</title>
+      <link>//localhost:1313/posts/sleuthkit-apprentice/</link>
+      <pubDate>Tue, 05 Apr 2022 18:59:08 +0800</pubDate>
+      <guid>//localhost:1313/posts/sleuthkit-apprentice/</guid>
+      <description>The Problem is the following:&#xA;Download &amp;amp; extract the image Run the following command:&#xA;wget https://artifacts.picoctf.net/c/336/disk.flag.img.gz gunzip disk.flag.img.gz a file named disk.flag.img should show up at your working directory.&#xA;Finding the flag with autopsy In the following steps, I will demonstrate how to extract the key with autopsy, the graphical user interface for sleuthkit. This tool is built into kali linux.&#xA;First, run autopsy and open localhost:9999/autopsy&#xA;Use the graphical user interface to open a new case, and click through the default options until &amp;ldquo;Add A New Image&amp;rdquo;:</description>
+    </item>
+  </channel>
+</rss>

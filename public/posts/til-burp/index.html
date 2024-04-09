@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>TIL: Burpsuite - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="In praise of professional software." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="TIL: Burpsuite" />
+<meta property="og:description" content="In praise of professional software." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/til-burp/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-12-08T23:13:00+08:00" />
+<meta property="article:modified_time" content="2022-12-08T23:13:00+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="TIL: Burpsuite"/>
+<meta name="twitter:description" content="In praise of professional software."/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">TIL: Burpsuite</h1>
+			<div class="meta">Posted on Dec 8, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="about-til">About: TIL</h2>
+<p>TIL stands for &ldquo;Today I Learned,&rdquo;
+and I plan to write a TIL post whenever I discover something interesting.
+It could be related to anything: from technology to life.</p>
+<p>This is inspired by <a href="https://100daystooffload.com">100daystooffload</a> and various TIL posts I found over the internet.
+This can motivate me to keep finding interesting things to learn and experience,
+improve my writing a little bit, and, most importantly, be an intriguing read.</p>
+<h2 id="burpsuite">Burpsuite</h2>
+<p>Burpsuite is a professional software for web application security testing.
+I heard of it immediately as I started learning web security from sites such as <a href="https://www.hackthebox.com">hackthebox</a>.
+However, it wasn&rsquo;t until today that I actually got the time to actually sit down and try it out,
+as the complex interface and the new terminologies intimidated me.
+If devtools, postman, and some python scripting work, why complicate me with a new tool?</p>
+<p>Today, I had an hour to spare, so I decided to try it.
+Upon watching the <a href="https://www.youtube.com/watch?v=LSqC9qgEMi0&amp;list=PLxhvVyxYRviajtnHaICLg_ZcY47TpgGjR&amp;index=1">tutorial from hacker101</a>,
+I didn&rsquo;t change my mind about burpsuite&rsquo;s innate complexity, but I realized that such complexity is <strong>necessary</strong>.
+When doing web CTFs with devtools, postman, and python, I often find myself doing the same thing over and over again:
+noticing some noteworthy detail about a request in devtools,
+manually recreating that request in postman by copying and pasting all the parameters and headers,
+going to cyberchef for some decoding and encoding,
+manually tweaking those parameters until I get the desired result,
+then reproduce this request repeatedly with python if I need any form of automation or brute forcing.</p>
+<p>Burpsuite, on the other hand,
+allows for automatic capture of all requests and responses,
+can intercept and modify requests on the fly,
+provides a built-in tool for common encoding and decoding tasks,
+and provides a built-in tool for enumerating parameters that cover the most common cases.
+While burpsuite is still less convenient or flexible compared to devtools, postman, cyberchef, etc.,
+it provides a streamlined workflow that is much more efficient than context-switching between different tools constantly
+and allows for a much more efficient workflow when dealing with targets of increasing complexity.</p>
+<p>Thus, it&rsquo;s safe to say that burpsuite will save me tons of hours down the road on web security-related projects,
+and I&rsquo;m glad I finally took the time to learn it.
+I suppose that a similar argument can be made for all professional software in general:
+yes, they do look not very user-friendly and are probably written in Java,
+they are harder to learn and use than their counterparts,
+but in return, they optimize for the workflows of the professionals they&rsquo;re targeting for,
+and in turn, saves an insane amount of time.</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/til">TIL</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

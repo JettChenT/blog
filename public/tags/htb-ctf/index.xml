@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Htb-Ctf on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/htb-ctf/</link>
+    <description>Recent content in Htb-Ctf on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Fri, 20 May 2022 18:48:39 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/htb-ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB CTF 2022 Compressor writeup</title>
+      <link>//localhost:1313/posts/compressor/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/compressor/</guid>
+      <description>Problem description The problem starts a docker instance, which could be connected via netcat. This shows the following interface:&#xA;[*] Directory to work in: QV35hifhJuQ2tO7nNnKNDf30JmUxfAej Component List: +===============+ | | | 1. Head 🤖 | | 2. Torso 🦴 | | 3. Hands 💪 | | 4. Legs 🦵 | | | +===============+ [*] Choose component: Choosing any of the components shows the following interface:&#xA;Actions: 1. Create artifact 2. List directory (pwd; ls -la) 3.</description>
+    </item>
+    <item>
+      <title>HTB CTF Golden Persistence Writeup</title>
+      <link>//localhost:1313/posts/golden-persistence/</link>
+      <pubDate>Fri, 20 May 2022 18:48:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/golden-persistence/</guid>
+      <description>Problem description The challenge has a downloadable part. After extracting the zip file, we have a NTUSER.DAT&#xA;Prerequisites NTUSER.DAT is a windows generated file which contains the information of the user account settings and customizations.&#xA;After some research on the internet, I fond that Regripper and RegistryExplorer are the two useful tools of conducting forensics on NTUSER.DAT files.&#xA;Download both of the tools from the links above onto a windows machine/vm.</description>
+    </item>
+  </channel>
+</rss>

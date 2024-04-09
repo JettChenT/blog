@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>picoCTF 2022 Sleuthkit Apprentice Writeup - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Solution to PicoCTF 2022 problem sleuthkit apprentice" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="picoCTF 2022 Sleuthkit Apprentice Writeup" />
+<meta property="og:description" content="Solution to PicoCTF 2022 problem sleuthkit apprentice" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/sleuthkit-apprentice/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-05T18:59:08+08:00" />
+<meta property="article:modified_time" content="2022-04-05T18:59:08+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="picoCTF 2022 Sleuthkit Apprentice Writeup"/>
+<meta name="twitter:description" content="Solution to PicoCTF 2022 problem sleuthkit apprentice"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">picoCTF 2022 Sleuthkit Apprentice Writeup</h1>
+			<div class="meta">Posted on Apr 5, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<p>The Problem is the following:</p>
+<p><img src="https://s2.loli.net/2022/04/05/sF41VTPtkq5K7DR.png" alt=""></p>
+<h3 id="download--extract-the-image">Download &amp; extract the image</h3>
+<p>Run the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget https://artifacts.picoctf.net/c/336/disk.flag.img.gz
+</span></span><span style="display:flex;"><span>gunzip disk.flag.img.gz
+</span></span></code></pre></div><p>a file named <code>disk.flag.img</code> should show up at your working directory.</p>
+<h3 id="finding-the-flag-with-autopsy">Finding the flag with autopsy</h3>
+<p>In the following steps, I will demonstrate how to extract the key with <a href="https://www.autopsy.com/">autopsy</a>, the graphical user interface for <a href="https://www.sleuthkit.org/">sleuthkit</a>. This tool is built into kali linux.</p>
+<p>First, run <code>autopsy</code> and open <code>localhost:9999/autopsy</code></p>
+<p>Use the graphical user interface to open a new case, and click through the default options until &ldquo;Add A New Image&rdquo;:</p>
+<p>fill in the absolute path of the image downloaded(use <code>pwd</code> to get your current directory)</p>
+<p><img src="https://s2.loli.net/2022/04/05/ITeROd6mg15NuaM.png" alt=""></p>
+<p>again, click through the default options until this page:</p>
+<p><img src="https://s2.loli.net/2022/04/05/5zcjny3C2fgvHIo.png" alt=""></p>
+<p>After some digging, you&rsquo;ll find that in conducting file analysis in /3/, when you search for the text <code>flag</code>,  there are two files, one of which is deleted, the other is encoded.</p>
+<p><img src="https://s2.loli.net/2022/04/05/cVWEIhPYAbXQOCN.png" alt=""></p>
+<p>Next, click on display Hex value, and you&rsquo;ll find the flag:</p>
+<p><img src="https://s2.loli.net/2022/04/05/sIoHtDAiw2UbK1B.png" alt=""></p>
+<p>The flag is: <code>picoCTF{by73_5urf3r_25b0d0c0}</code></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/picoctf">picoctf</a></li>
+					
+					<li><a href="/tags/ctf-writeups">ctf-writeups</a></li>
+					
+					<li><a href="/tags/forensics">forensics</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>

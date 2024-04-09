@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dctf on Jett&#39;s blog</title>
+    <link>//localhost:1313/tags/dctf/</link>
+    <description>Recent content in Dctf on Jett&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Jett Chen</copyright>
+    <lastBuildDate>Mon, 18 Apr 2022 10:41:39 +0800</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/dctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dctf 2022 Safe Space writeup</title>
+      <link>//localhost:1313/posts/safe-space/</link>
+      <pubDate>Mon, 18 Apr 2022 10:41:39 +0800</pubDate>
+      <guid>//localhost:1313/posts/safe-space/</guid>
+      <description>The problem link to the problem(requires login)&#xA;Solution First, connect to the remote server:&#xA;nc 51.124.222.205 13379 After interacting with the server, you&amp;rsquo;ll find that the server is a python REPL with a lot of charcters and functions such as &amp;quot; unavaliable. This type of problem is called python sandbox escape, or python jail.&#xA;After trying all the commands from the internet, you&amp;rsquo;ll find that the command __builtins__ is not banned for this problem.</description>
+    </item>
+    <item>
+      <title>dctf 2022 Problem Secure Creds Writeup</title>
+      <link>//localhost:1313/posts/secure-creds/</link>
+      <pubDate>Mon, 18 Apr 2022 08:49:05 +0800</pubDate>
+      <guid>//localhost:1313/posts/secure-creds/</guid>
+      <description>The problem link to the problem(requires login)&#xA;Solution First, download the zip file, and unzip it.&#xA;You should see the file lsass.DMP&#xA;To check the filedump type, use the file command:&#xA;file lsass.DMP output: lsass.DMP: Mini DuMP crash report, 16 streams, Sat Apr 9 02:47:27 2022, 0x421826 type&#xA;After a google search, the term lsass stands for &amp;ldquo;Local Security Authority Server Service,&amp;rdquo; and after searching the keywords &amp;ldquo;lsass minidump&amp;rdquo; together, you would encounter a tool called Mimikatz</description>
+    </item>
+  </channel>
+</rss>

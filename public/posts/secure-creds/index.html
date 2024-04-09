@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>dctf 2022 Problem Secure Creds Writeup - Jett&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="dctf 2022 Secure Creds Writeup" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="dctf 2022 Problem Secure Creds Writeup" />
+<meta property="og:description" content="dctf 2022 Secure Creds Writeup" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/secure-creds/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-18T08:49:05+08:00" />
+<meta property="article:modified_time" content="2022-04-18T08:49:05+08:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="dctf 2022 Problem Secure Creds Writeup"/>
+<meta name="twitter:description" content="dctf 2022 Secure Creds Writeup"/>
+<script src="//localhost:1313/js/feather.min.js"></script>
+	
+	
+        <link href="//localhost:1313/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css" rel="stylesheet">
+	
+	<script async defer data-website-id="2fb8ef9e-0de8-4211-920f-906c236ffb58" src="https://analytics.jettchen.me/umami.js"></script>
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="//localhost:1313/css/main.40ca3a860425083862b7ebd55447caec5c4384573f0cb098b8d06a91e8dace2e.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="//localhost:1313/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css" media="(prefers-color-scheme: dark)"  />
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="//localhost:1313/">Jett&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">All posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		<a href="/about">About</a>
+		
+		<a href="/contact">Contact</a>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">dctf 2022 Problem Secure Creds Writeup</h1>
+			<div class="meta">Posted on Apr 18, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="the-problem">The problem</h2>
+<p><img src="https://s2.loli.net/2022/04/18/5cRXj2wet7lZOEs.png" alt=""></p>
+<p><a href="https://dctf.dragonsec.si/challenges#Secure%20Creds-19">link to the problem(requires login)</a></p>
+<h2 id="solution">Solution</h2>
+<p>First, download the zip file, and unzip it.</p>
+<p>You should see the file lsass.DMP</p>
+<p>To check the filedump type, use the <code>file</code> command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>file lsass.DMP
+</span></span></code></pre></div><p>output:
+<code>lsass.DMP: Mini DuMP crash report, 16 streams, Sat Apr  9 02:47:27 2022, 0x421826 type</code></p>
+<p>After a google search, the term lsass stands for &ldquo;Local Security Authority Server Service,&rdquo; and after searching the keywords &ldquo;lsass minidump&rdquo; together,
+you would encounter a tool called <a href="https://github.com/ParrotSec/mimikatz">Mimikatz</a></p>
+<p>Finally:</p>
+<ul>
+<li>open up a windows vm if you&rsquo;re not on windows</li>
+<li>disable windows defender</li>
+<li>download&amp;extract <a href="https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20210810/mimikatz_trunk.zip">mimikatz_trunk</a></li>
+<li>move <code>lsass.DMP</code> to <code>mimikatz_trunk</code> folder</li>
+<li>cd to <code>x64</code> folder and execute <code>mimikatz.exe</code></li>
+<li>execute the commands:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>cd ../
+</span></span><span style="display:flex;"><span>sekurlsa::minidump lsass.aDMP
+</span></span><span style="display:flex;"><span>sekurlsa::logonPasswords
+</span></span></code></pre></div><p>The results:
+<img src="https://s2.loli.net/2022/04/18/KFgP87CSmJonEkY.png" alt=""></p>
+<p>Inside tspkg, we can see that the password(aka. the flag) is <code>dctf{n0_ant1v1ru5_l0l}</code></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/dctf">dctf</a></li>
+					
+					<li><a href="/tags/ctf-writeups">ctf-writeups</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		<script src="https://utteranc.es/client.js"
+        	repo="JettChenT/blog"
+        	issue-term="pathname"
+        	theme="preferred-color-scheme"
+        	crossorigin="anonymous"
+        	async>
+		</script>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/JettChenT" title="GitHub"><i data-feather="github"></i></a><a class="soc" href="https://twitter.com/jettchen5" title="Twitter"><i data-feather="twitter"></i></a></div>
+  <div class="footer-info">
+    2024  © Jett Chen |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>
