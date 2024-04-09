@@ -4,7 +4,7 @@ date: 2024-04-09T17:34:41+08:00
 description: "Solution for PicoCTF 2024's least solved web challenge: Elements"
 ---
 
-We got ranked #10 globally in PicoCTF 2024!
+We ranked #10 globally in PicoCTF 2024!
 
 ## Elements
 
